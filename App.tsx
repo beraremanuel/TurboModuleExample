@@ -1,117 +1,75 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
 import React from 'react';
-import type {PropsWithChildren} from 'react';
 import {
   SafeAreaView,
-  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
-  useColorScheme,
   View,
 } from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
+import NativeDeviceInfoTest from './specs/NativeDeviceInfoTest';
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
+const UNKNOWN = '<unknown>';
 
 function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  const info = {
+    deviceModule: NativeDeviceInfoTest?.getDeviceModule() ?? UNKNOWN,
+    isBatteryCharging: NativeDeviceInfoTest?.getIsBatteryCharging() ? 'Yes' : 'No',
+    totalMemory: NativeDeviceInfoTest?.getTotalMemory() ?? UNKNOWN,
+    readableVersion: NativeDeviceInfoTest?.getReadableVersion() ?? UNKNOWN,
+    deviceBrand: NativeDeviceInfoTest?.getDeviceBrand() ?? UNKNOWN,
+    device: NativeDeviceInfoTest?.getDevice() ?? UNKNOWN,
+    deviceModel: NativeDeviceInfoTest?.getDeviceModel() ?? UNKNOWN,
+    deviceManufacturer: NativeDeviceInfoTest?.getDeviceManufacturer() ?? UNKNOWN,
+    product: NativeDeviceInfoTest?.getProduct() ?? UNKNOWN,
+    osName: NativeDeviceInfoTest?.getOsName() ?? UNKNOWN,
+    osVersion: NativeDeviceInfoTest?.getOsVersion() ?? UNKNOWN,
   };
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
+    <SafeAreaView style={styles.background}>
+      <StatusBar barStyle="dark-content" backgroundColor={Colors.lighter} />
+      <Text style={styles.sectionTitle}>Device Info</Text>
+      <View style={styles.infoContainer}>
+        <Text style={styles.infoLabel}>Device Module: <Text style={styles.infoValue}>{info.deviceModule}</Text></Text>
+        <Text style={styles.infoLabel}>Is Battery Charging: <Text style={styles.infoValue}>{info.isBatteryCharging}</Text></Text>
+        <Text style={styles.infoLabel}>Total Memory: <Text style={styles.infoValue}>{info.totalMemory}</Text></Text>
+        <Text style={styles.infoLabel}>Readable Version: <Text style={styles.infoValue}>{info.readableVersion}</Text></Text>
+        <Text style={styles.infoLabel}>Device Brand: <Text style={styles.infoValue}>{info.deviceBrand}</Text></Text>
+        <Text style={styles.infoLabel}>Device: <Text style={styles.infoValue}>{info.device}</Text></Text>
+        <Text style={styles.infoLabel}>Device Model: <Text style={styles.infoValue}>{info.deviceModel}</Text></Text>
+        <Text style={styles.infoLabel}>Device Manufacturer: <Text style={styles.infoValue}>{info.deviceManufacturer}</Text></Text>
+        <Text style={styles.infoLabel}>Product: <Text style={styles.infoValue}>{info.product}</Text></Text>
+        <Text style={styles.infoLabel}>OS Name: <Text style={styles.infoValue}>{info.osName}</Text></Text>
+        <Text style={styles.infoLabel}>OS Version: <Text style={styles.infoValue}>{info.osVersion}</Text></Text>
+      </View>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  background: {
+    backgroundColor: Colors.lighter,
+    flex: 1,
   },
   sectionTitle: {
     fontSize: 24,
     fontWeight: '600',
+    marginTop: 32,
+    paddingHorizontal: 24,
   },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
+  infoContainer: {
+    marginTop: 16,
+    paddingHorizontal: 24,
+  },
+  infoLabel: {
+    fontSize: 16,
+    fontWeight: '500',
+    marginBottom: 6,
+  },
+  infoValue: {
     fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
   },
 });
 
